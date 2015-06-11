@@ -1,5 +1,9 @@
 # Custom user authentication with webapp2
 
+This version uses [Bootstrap Material Design stylesheets](https://github.com/FezVrasta/bootstrap-material-design) to enrich the visual of Html Forms.
+
+All the rest remains the same.
+
 This is a skeleton implementation of user account management with webapp2.
 
 You will have to take care of the following items:
