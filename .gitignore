@@ -33,3 +33,7 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Bower
+**/bower_components/*
+!**/bower_components/jquery

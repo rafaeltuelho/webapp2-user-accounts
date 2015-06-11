@@ -2,17 +2,44 @@
 
 {% block maincontent %}
 
-<h1>Recover password</h1>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-header">
+            <h1 id="forms">Password Recovery</h1>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-8">
+        <div class="well bs-component">
 
-<p>Forgot your password? Click the link below to receive a link to recover your password.</p>
+          {% if not_found %}
+              <div class="alert alert-dismissable alert-danger">
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                  <strong>Not found!</strong> We could not found any user with the given username.
+              </div>
+          {% endif %}
 
-{% if not_found %}
-    <strong>Not found!</strong> We could not found any user with the given username.
-{% endif %} 
+          <form class="form-horizontal" action="/forgot" method="POST">
+            <fieldset>
+                <p class="text-primary">Forgot your password? <br><small>Inform your email and click the button below to receive a link to recover your password.</small></p>
+                <div class="form-group">
+                    <label for="username" class="col-lg-4 control-label">Email Address (used as login)</label>
+                    <div class="col-lg-6">
+                      <input type="email" class="form-control" id="username" name="username" value="{{ username }}">
+                    </div>
+                </div>
 
-<form class="form" action= "/forgot" method="POST">
-	<input type="text" value="{{ username }}" name="username"/>
-	<input type="submit" value="Send password reset link"/>
-</form>
+                <div class="form-group">
+                   <div class="col-lg-6 col-lg-offset-4">
+                       <button type="submit" class="btn btn-primary">Send password reset link</button>
+                   </div>
+                </div>
+
+          </fieldset>
+        </form>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

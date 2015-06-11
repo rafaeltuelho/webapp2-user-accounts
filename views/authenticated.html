@@ -2,7 +2,13 @@
 
 {% block maincontent %}
 
-<h1>Congratulations {{ user.name }}!</h1>
-<p>If you see this page, it means that you managed to log in successfully.</p>
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h3 class="panel-title">Congratulations {{ user.name }}!</h3>
+    </div>
+    <div class="panel-body">
+      If you see this page, it means that you managed to log in successfully.
+    </div>
+</div>
 
 {% endblock %}

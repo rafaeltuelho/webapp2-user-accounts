@@ -1,50 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>{% block title %}User accounts demo{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap/material/roboto.min.css" rel="stylesheet">
+    <!-- link href="/css/bootstrap/material/material.min.css" rel="stylesheet" -->
+    <link href="/css/bootstrap/material/material-fullpalette.min.css" rel="stylesheet">
+    <link href="/css/bootstrap/material/ripples.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<!-- -->
     <style>
-      input {
-        display: block;
+      /* Sticky footer styles
+      -------------------------------------------------- */
+      html {
+        position: relative;
+        min-height: 100%;
+      }
+      body {
+        /* Margin bottom by footer height */
+        margin-bottom: 60px;
+      }
+      .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        /* Set the fixed height of the footer here */
+        height: 60px;
+        background-color: #f5f5f5;
       }
     </style>
+<!-- -->
   </head>
 
   <body>
 
-  <div class="content">
+  <div class="navbar navbar-default">
+      <div class="container">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="javascript:void(0)">Webapp2 Auth Demo</a>
+      </div>
+      <div class="navbar-collapse collapse navbar-responsive-collapse">
+          <ul class="nav navbar-nav">
+              <li class="active"><a href="/">Home</a></li>
+              <li><a href="/signup">New User</a></li>
+              <li><a href="/authenticated">Secured Page</a></li>
+              <li class="dropdown">
+                  <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">More details <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                      <li><a target="_blank" href="http://blog.abahgat.com/2013/01/07/user-authentication-with-webapp2-on-google-app-engine/">Tutorial</a></li>
+                      <li><a target="_blank" href="http://github.com/abahgat/webapp2-user-accounts">Source Code</a></li>
+                      <li class="divider"></li>
+                      <li class="dropdown-header">Got Questions?</li>
+                      <li><a target="_blank" href="http://blog.abahgat.com/about">Get in touch</a></li>
+                  </ul>
+              </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+              <li>
+                {% if not user %}
+                  <a href="/login">Login (and forgot password)</a>
+                {% else %}
+                  <a href="javascript:void(0)">Logged in as {{ user.name }}</a>
+                {% endif %}
+              </li>
+              <li><a href="/logout">Logout</a></li>
+              <!--
+              <li class="dropdown">
+                  <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                      <li><a href="javascript:void(0)">Action</a></li>
+                      <li><a href="javascript:void(0)">Another action</a></li>
+                      <li><a href="javascript:void(0)">Something else here</a></li>
+                      <li class="divider"></li>
+                      <li><a href="javascript:void(0)">Separated link</a></li>
+                  </ul>
+              </li>
+              -->
+          </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
     {% block maincontent %}
 
     {% endblock %}
   </div>
 
-  <div>
-    <footer>
-      <hr/>
-      <p>
-        {% if not user %}
-          <a href="/login">Login (and forgot password)</a>
-        {% else %}
-          Logged in as <span style="background-color: OldLace">{{ user.name }}</span> | <a href="/logout">Logout</a>
-        {% endif %}
-        |
-        <a href="/">Home</a>
-        |
-        <a href="/signup">New user</a>
-        |
-        <a href="/authenticated">Secured page</a> (you can see this after login)
-        |
-        <a href="http://blog.abahgat.com/2013/01/07/user-authentication-with-webapp2-on-google-app-engine/">Tutorial</a>
-        |
-        <a href="http://github.com/abahgat/webapp2-user-accounts">Source code</a>
-      </p>
+  <footer class="footer">
+    <div class="container">
       <p>
         Got questions? <a href="http://blog.abahgat.com/about">Get in touch</a>.
         <small>And if you want to <strong>donate</strong> a little something, <a href="http://abahgat.github.io/webapp2-user-accounts#donate">here</a> a few options.</small>
       </p>
-    </footer>
-  </div>
+    </div>
+  </footer>
 
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <!-- script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script -->
+  <script src="/js/jquery/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="/js/bootstrap/bootstrap.min.js"></script>
+  <script src="/js/bootstrap/material/ripples.min.js"></script>
+  <script src="/js/bootstrap/material/material.min.js"></script>
+  <script src="/js/main.js"></script>
 
   </body>
 </html>

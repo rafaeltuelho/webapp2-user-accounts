@@ -63,7 +63,7 @@ class BaseHandler(webapp2.RequestHandler):
     """Returns the implementation of the user model.
 
     It is consistent with config['webapp2_extras.auth']['user_model'], if set.
-    """    
+    """
     return self.auth.store.user_model
 
   @webapp2.cached_property
@@ -107,7 +107,8 @@ class SignupHandler(BaseHandler):
     self.render_template('signup.html')
 
   def post(self):
-    user_name = self.request.get('username')
+    #user_name = self.request.get('username')
+    user_name = self.request.get('email')
     email = self.request.get('email')
     name = self.request.get('name')
     password = self.request.get('password')
@@ -115,14 +116,18 @@ class SignupHandler(BaseHandler):
 
     unique_properties = ['email_address']
     user_data = self.user_model.create_user(user_name,
-      unique_properties,
-      email_address=email, name=name, password_raw=password,
-      last_name=last_name, verified=False)
+                                              unique_properties,
+                                              email_address=email,
+                                              name=name,
+                                              password_raw=password,
+                                              last_name=last_name,
+                                              verified=False)
+
     if not user_data[0]: #user_data is a tuple
       self.display_message('Unable to create user for email %s because of \
         duplicate keys %s' % (user_name, user_data[1]))
       return
-    
+
     user = user_data[1]
     user_id = user.get_id()
 
@@ -159,7 +164,7 @@ class ForgotPasswordHandler(BaseHandler):
           They will be able to do so by visiting <a href="{url}">{url}</a>'
 
     self.display_message(msg.format(url=verification_url))
-  
+
   def _serve_page(self, not_found=False):
     username = self.request.get('username')
     params = {
@@ -187,7 +192,7 @@ class VerificationHandler(BaseHandler):
       logging.info('Could not find any user with id "%s" signup token "%s"',
         user_id, signup_token)
       self.abort(404)
-    
+
     # store user data in the session
     self.auth.set_session(self.auth.store.user_to_dict(user), remember=True)
 
@@ -199,7 +204,7 @@ class VerificationHandler(BaseHandler):
         user.verified = True
         user.put()
 
-      self.display_message('User email address has been verified.')
+      self.display_message(user.email_address + ' has been verified.')
       return
     elif verification_type == 'p':
       # supply user to the page
@@ -229,7 +234,7 @@ class SetPasswordHandler(BaseHandler):
 
     # remove signup token, we don't want users to come back with an old link
     self.user_model.delete_signup_token(user.get_id(), old_token)
-    
+
     self.display_message('Password updated')
 
 class LoginHandler(BaseHandler):

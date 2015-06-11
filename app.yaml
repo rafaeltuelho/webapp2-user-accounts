@@ -5,6 +5,68 @@ api_version: 1
 threadsafe: yes
 
 handlers:
+# static content
+- url: /(.*\.html)
+  mime_type: text/html
+  static_files: static/\1
+  upload: static/(.*\.html)
+  expiration: "1h"
+
+- url: /(favicon\.ico|robots\.txt)
+  static_files: static/\1
+  upload: static/(.*)
+  expiration: '1d'
+
+- url: /img/(.*\.(gif|png|jpg))
+  static_files: static/img/\1
+  upload: static/img/(.*\.(gif|png|jpg))
+
+- url: /css/bootstrap/material/(.*\.css)
+  mime_type: text/css
+  static_files: static/bower_components/bootstrap-material-design/dist/css/\1
+  upload: static/bower_components/bootstrap-material-design/dist/css/(.*\.css)
+
+- url: /css/bootstrap/fonts/(.*\.*)
+  mime_type: text/css
+  static_files: static/bower_components/bootstrap-material-design/dist/fonts/\1
+  upload: static/bower_components/bootstrap-material-design/dist/fonts/(.*\.*)
+
+- url: /css/bootstrap/(.*\.css)
+  mime_type: text/css
+  static_files: static/bower_components/bootstrap/dist/css/\1
+  upload: static/bower_components/bootstrap/dist/css/(.*\.css)
+
+- url: /css/(.*\.css)
+  mime_type: text/css
+  static_files: static/css/\1
+  upload: static/css/(.*\.css)
+
+- url: /cors/(.*\.html)
+  mime_type: text/html
+  static_files: static/cors/\1
+  upload: static/cors/(.*\.html)
+
+- url: /js/jquery/(.*\.js)
+  mime_type: text/javascript
+  static_files: static/bower_components/jquery/dist/\1
+  upload: static/bower_components/jquery/dist/(.*\.js)
+
+- url: /js/bootstrap/material/(.*\.js)
+  mime_type: text/javascript
+  static_files: static/bower_components/bootstrap-material-design/dist/js/\1
+  upload: static/bower_components/bootstrap-material-design/dist/js/(.*\.js)
+
+- url: /js/bootstrap/(.*\.js)
+  mime_type: text/javascript
+  static_files: static/bower_components/bootstrap/dist/js/\1
+  upload: static/bower_components/bootstrap/dist/js/(.*\.js)
+
+- url: /js/(.*\.js)
+  mime_type: text/javascript
+  static_files: static/js/\1
+  upload: static/js/(.*\.js)
+
+# Dinamic content
 - url: /signup
   script: main.app
   secure: always

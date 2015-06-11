@@ -1,24 +1,55 @@
 {% extends "main.html" %}
 
 {% block maincontent %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-header">
+            <h1 id="forms">Login</h1>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-8">
+        <div class="well bs-component">
 
-<h1>Login</h1>
+          {% if failed %}
+              <div class="alert alert-dismissable alert-danger">
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                  <strong>Login failed!</strong> <a href="javascript:void(0)" class="alert-link">Check your credentials</a> and try again.
+              </div>
+          {% endif %}
 
-{% if failed %}
+          <form class="form-horizontal" action="/login" method="POST">
+            <fieldset>
+                <legend>Login</legend>
+                <div class="form-group">
+                    <label for="username" class="col-lg-4 control-label">Email Address (used as login)</label>
+                    <div class="col-lg-6">
+                      <input type="email" class="form-control" id="username" name="username" value="{{ username }}">
+                    </div>
+                </div>
 
-    <strong>Login failed!</strong> Check your credentials and try again.
+                <div class="form-group">
+                    <label for="password" class="col-lg-4 control-label">Password</label>
+                    <div class="col-lg-6">
+                      <input type="password" class="form-control" id="password" name="password">
+                    </div>
+                </div>
 
-{% endif %}
+                <div class="form-group">
+                   <div class="col-lg-6 col-lg-offset-4">
+                       <button type="reset" class="btn btn-default">Cancel</button>
+                       <button type="submit" class="btn btn-primary">Login</button>
+                   </div>
+                </div>
 
-<form class="form" action= "/login" method="POST">
-	<label for="username">Username</label>
-	<input type="text" value="{{ username }}" name="username"/>
-	<label for="password">Password</label>
-	<input type="password" name="password"/>
-	<button type="submit" class="btn">Login</button>
-</form>
+                <a href="/forgot">Forgot password</a>
 
-<a href="/forgot">Forgot password</a>
+          </fieldset>
+        </form>
+    </div>
+  </div>
+</div>
 
 
 {% endblock %}

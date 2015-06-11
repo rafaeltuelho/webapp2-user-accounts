@@ -1,6 +1,14 @@
 {% extends "main.html" %}
 
 {% block maincontent %}
-<p>{% autoescape off %}{{ message }}{% endautoescape %}</p>
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Info</h3>
+    </div>
+    <div class="panel-body">
+      {% autoescape off %}{{ message }}{% endautoescape %}
+    </div>
+</div>
 
 {% endblock %}
