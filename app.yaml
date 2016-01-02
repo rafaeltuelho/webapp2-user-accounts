@@ -1,5 +1,5 @@
-application: webapp2-user-authentication
-version: 1
+application: simple-pywebapp2-user-auth
+version: 1-1
 runtime: python27
 api_version: 1
 threadsafe: yes
@@ -79,10 +79,16 @@ handlers:
   script: main.app
   secure: always
 
+# Endpoints handler: Must be /_ah/spi. Apps send requests to /_ah/api, but these are handled at /_ah/spi!!
+- url: /_ah/spi/.*
+  script: helloworld_api.APPLICATION
+
 - url: .*
   script: main.app
-
 
 libraries:
 - name: webapp2
   version: "2.5.1"
+
+- name: endpoints
+  version: "1.0"

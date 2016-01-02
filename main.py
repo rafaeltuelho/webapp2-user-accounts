@@ -2,6 +2,7 @@
 
 from google.appengine.ext.webapp import template
 from google.appengine.ext import ndb
+from google.appengine.api import mail
 
 import logging
 import os.path
@@ -12,6 +13,10 @@ from webapp2_extras import sessions
 
 from webapp2_extras.auth import InvalidAuthIdError
 from webapp2_extras.auth import InvalidPasswordError
+
+import reCaptcha
+
+RECAPTCHA_SECRET_KEY='<put your secret here>'
 
 def user_required(handler):
   """
@@ -67,6 +72,14 @@ class BaseHandler(webapp2.RequestHandler):
     return self.auth.store.user_model
 
   @webapp2.cached_property
+  def recaptcha_response(self):
+    """Returns the implementation of the reCaptchaResponse.
+
+    It is consistent with config['webapp2_extras.recaptcha']['reCaptcha.RecaptchaResponse'], if set.
+    """
+    return self.auth.store.reCaptcha
+
+  @webapp2.cached_property
   def session(self):
       """Shortcut to access the current session."""
       return self.session_store.get_session(backend="datastore")
@@ -79,12 +92,23 @@ class BaseHandler(webapp2.RequestHandler):
     path = os.path.join(os.path.dirname(__file__), 'views', view_filename)
     self.response.out.write(template.render(path, params))
 
-  def display_message(self, message):
+  def display_message(self, message, style='panel-info'):
     """Utility function to display a template with a simple message."""
     params = {
-      'message': message
+      'message': message,
+      'style' : style
     }
     self.render_template('message.html', params)
+
+  def send_mail(self, message_subject, message_body, recipient_list):
+    message = mail.EmailMessage(sender="simple-pywebapp2-user-auth@appspot.gserviceaccount.com",
+                                subject=message_subject)
+
+    message.to = recipient_list
+    message.body = message_body
+
+    message.send()
+
 
   # this is needed for webapp2 sessions to work
   def dispatch(self):
@@ -113,6 +137,16 @@ class SignupHandler(BaseHandler):
     name = self.request.get('name')
     password = self.request.get('password')
     last_name = self.request.get('lastname')
+    g_recaptcha_response = self.request.get('g-recaptcha-response')
+
+    recaptcha_response = reCaptcha.submit(RECAPTCHA_SECRET_KEY, g_recaptcha_response)
+    print 'recaptcha_response.is_valid? ', recaptcha_response.is_valid
+
+    if not recaptcha_response.is_valid :
+      print 'recaptcha_response.is_valid: ', recaptcha_response.error_code
+      self.display_message('Unable to create user for email %s because of \
+        error %s' % (user_name, recaptcha_response.error_code), 'panel-danger')
+      return
 
     unique_properties = ['email_address']
     user_data = self.user_model.create_user(user_name,
@@ -125,7 +159,7 @@ class SignupHandler(BaseHandler):
 
     if not user_data[0]: #user_data is a tuple
       self.display_message('Unable to create user for email %s because of \
-        duplicate keys %s' % (user_name, user_data[1]))
+        duplicate keys %s' % (user_name, user_data[1]), 'panel-danger')
       return
 
     user = user_data[1]
@@ -139,7 +173,11 @@ class SignupHandler(BaseHandler):
     msg = 'Send an email to user in order to verify their address. \
           They will be able to do so by visiting <a href="{url}">{url}</a>'
 
-    self.display_message(msg.format(url=verification_url))
+    self.send_mail('GAE Python Webapp2 User: AuthConfirm your Subscription',
+        msg.format(url=verification_url),
+        email)
+
+    self.display_message(msg.format(url=verification_url), 'panel-info')
 
 class ForgotPasswordHandler(BaseHandler):
   def get(self):
@@ -163,7 +201,11 @@ class ForgotPasswordHandler(BaseHandler):
     msg = 'Send an email to user in order to reset their password. \
           They will be able to do so by visiting <a href="{url}">{url}</a>'
 
-    self.display_message(msg.format(url=verification_url))
+    self.send_mail('GAE Python Webapp2 User: AuthConfirm your Subscription',
+        msg.format(url=verification_url),
+        user.email_address)
+
+    self.display_message(msg.format(url=verification_url), 'panel-info')
 
   def _serve_page(self, not_found=False):
     username = self.request.get('username')
@@ -204,7 +246,7 @@ class VerificationHandler(BaseHandler):
         user.verified = True
         user.put()
 
-      self.display_message(user.email_address + ' has been verified.')
+      self.display_message(user.email_address + ' has been verified.', 'panel-success')
       return
     elif verification_type == 'p':
       # supply user to the page
@@ -225,7 +267,7 @@ class SetPasswordHandler(BaseHandler):
     old_token = self.request.get('t')
 
     if not password or password != self.request.get('confirm_password'):
-      self.display_message('passwords do not match')
+      self.display_message('passwords do not match', 'panel-danger')
       return
 
     user = self.user
@@ -235,7 +277,7 @@ class SetPasswordHandler(BaseHandler):
     # remove signup token, we don't want users to come back with an old link
     self.user_model.delete_signup_token(user.get_id(), old_token)
 
-    self.display_message('Password updated')
+    self.display_message('Password updated', 'panel-success')
 
 class LoginHandler(BaseHandler):
   def get(self):
