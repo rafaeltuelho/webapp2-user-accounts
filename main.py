@@ -16,7 +16,7 @@ from webapp2_extras.auth import InvalidPasswordError
 
 import reCaptcha
 
-RECAPTCHA_SECRET_KEY='<put your secret here>'
+RECAPTCHA_SECRET_KEY='6Ld5OQgTAAAAAEqbX9FDiOM4dyeGSEz58mlFHnOL'
 
 def user_required(handler):
   """
@@ -70,14 +70,6 @@ class BaseHandler(webapp2.RequestHandler):
     It is consistent with config['webapp2_extras.auth']['user_model'], if set.
     """
     return self.auth.store.user_model
-
-  @webapp2.cached_property
-  def recaptcha_response(self):
-    """Returns the implementation of the reCaptchaResponse.
-
-    It is consistent with config['webapp2_extras.recaptcha']['reCaptcha.RecaptchaResponse'], if set.
-    """
-    return self.auth.store.reCaptcha
 
   @webapp2.cached_property
   def session(self):
@@ -201,7 +193,7 @@ class ForgotPasswordHandler(BaseHandler):
     msg = 'Send an email to user in order to reset their password. \
           They will be able to do so by visiting <a href="{url}">{url}</a>'
 
-    self.send_mail('GAE Python Webapp2 User: AuthConfirm your Subscription',
+    self.send_mail('GAE Python Webapp2 User Auth: Confirm your Subscription',
         msg.format(url=verification_url),
         user.email_address)
 

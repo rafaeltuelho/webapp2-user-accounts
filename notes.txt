@@ -1,0 +1,62 @@
+Google Cloud Console (Developer Dashboad)
+  https://console.cloud.google.com
+
+GAE Python Development
+  https://cloud.google.com/appengine/docs/python/
+
+  GAE Python webapp2 archetype
+    https://github.com/coto/gae-boilerplate.git
+
+Google App Engine Python API documentation
+    https://cloud.google.com/appengine/docs/python/refdocs/genindex
+
+The Python NDB Datastore API
+  https://cloud.google.com/appengine/docs/python/ndb/
+
+  Some samples...
+    http://endpoints-proto-datastore.appspot.com/
+
+Google Protocol RPC used in the Cloud Endpoints
+  https://cloud.google.com/appengine/docs/python/tools/protorpc/
+
+The Message class used as payload in Cloud Endpoints API
+  https://cloud.google.com/appengine/docs/python/tools/protorpc/messages/messageclass
+
+Creating an Endpoint API
+  https://cloud.google.com/appengine/docs/python/endpoints/create_api
+
+  Exceptions (HTTP response codes)
+    https://cloud.google.com/appengine/docs/python/endpoints/exceptions
+
+Using Auth with Endpoints
+  https://cloud.google.com/appengine/docs/python/endpoints/auth
+
+  Creating OAuth2 Client Ids
+    https://cloud.google.com/appengine/docs/python/endpoints/auth#Creating_OAuth_20_client_IDs
+
+Consume the endpoint API from JS
+  https://cloud.google.com/appengine/docs/python/endpoints/consume_js
+  http://stackoverflow.com/questions/22586148/how-to-call-a-google-cloud-endpoint-from-google-apps-script
+  http://stackoverflow.com/questions/23865025/error-404-when-calling-google-cloud-endpoint-api-from-google-apps-script
+
+Integrating Google Apps Scripts with Google App Engine services with RPC
+  https://developers.google.com/apps-script/articles/appengine?hl=en
+  http://blog.knoldus.com/2013/01/19/google-apps-script-to-store-data-on-google-cloud-sorage/
+
+Google Apps Scripts OAuth2 support
+  https://github.com/googlesamples/apps-script-oauth2
+    https://github.com/googlesamples/apps-script-oauth2/blob/master/samples/GoogleServiceAccount.gs
+    https://github.com/googlesamples/apps-script-oauth2/blob/master/samples/FitBit.gs
+
+  http://stackoverflow.com/questions/13533565/how-to-authorize-with-oauth-2-0-from-appscript-to-google-apis
+  https://gist.github.com/entaq/4079885
+
+Users API Request payload sample:
+POST http://localhost:8080/_ah/api/helloworld/v1/hellogreeting/
+  {
+  "user_name": "rafaelcba@gmail.com",
+  "name": "Rafael",
+  "last_name": "Soares",
+  "email": "rafaelcba@gmail.com",
+  "password": "123456"
+  }
